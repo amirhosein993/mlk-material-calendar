@@ -24,7 +24,7 @@ import {
   MatDatepickerToggle
 } from '@angular/material/datepicker';
 import {MatButton} from '@angular/material/button';
-import {DateAdapter, provideNativeDateAdapter} from '@angular/material/core';
+import {provideNativeDateAdapter} from '@angular/material/core';
 
 @Component({
   selector: 'app-appointment-dialog',

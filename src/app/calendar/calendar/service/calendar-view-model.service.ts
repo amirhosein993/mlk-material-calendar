@@ -9,8 +9,8 @@ import {AppointmentDialogComponent} from '../../appointment-dialog/appointment-d
 @Injectable()
 export class CalendarViewModelService {
 
-  private _appointments : WritableSignal<Array<Appointment>> = signal([]);
-  public get appointments(): Signal<Array<Appointment>> {
+  private _appointments : WritableSignal<Appointment[]> = signal([]);
+  public get appointments(): Signal<Appointment[]> {
     return this._appointments.asReadonly();
   }
   private _weeks : WritableSignal<Date[][]> = signal([]);
@@ -18,13 +18,13 @@ export class CalendarViewModelService {
     return this._weeks.asReadonly();
   }
 
-  private _monthDays : WritableSignal<Array<Date>> = signal([]);
-  public get monthDays() : Signal<Array<Date>> {
+  private _monthDays : WritableSignal<Date[]> = signal([]);
+  public get monthDays() : Signal<Date[]> {
     return this._monthDays.asReadonly();
   }
 
-  private _timeSlots : WritableSignal<Array<string>> = signal([]);
-  public get timeSlots (): Signal<Array<string>> {
+  private _timeSlots : WritableSignal<string[]> = signal([]);
+  public get timeSlots (): Signal<string[]> {
     return this._timeSlots.asReadonly();
   }
 

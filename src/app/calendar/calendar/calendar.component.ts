@@ -42,9 +42,5 @@ export class CalendarComponent implements OnInit{
         this.calendarViewModelService.onStart();
     }
 
-  addAppointmentClicked() {
-
-  }
-
   protected readonly CalendarView = CalendarView;
 }

@@ -185,7 +185,6 @@ export class AppointmentService {
       endTime: '12:00',
     },
   ];
-  constructor() { }
 
   public getAppointments(): Observable<Appointment[]> {
     return of(this.appointments);
