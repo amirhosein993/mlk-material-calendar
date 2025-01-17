@@ -3,9 +3,8 @@ import {Appointment} from '../model/appointment';
 import {AppointmentRepositoryService} from './appointment-repository.service';
 import {CalendarView} from '../model/calendar-veiw.enum';
 import {MatDialog} from '@angular/material/dialog';
-import {AddAppointmentComponent} from '../../add-appointment/add-appointment.component';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
-import {EditAppointmentComponent} from '../../edit-appointment/edit-appointment.component';
+import {AppointmentDialogComponent} from '../../appointment-dialog/appointment-dialog.component';
 
 @Injectable()
 export class CalendarViewModelService {
@@ -227,7 +226,7 @@ export class CalendarViewModelService {
     const minutes = new Date().getMinutes();
     const h = hour < 10 ? `0${hour}` : hour;
     const m = minutes < 10 ? `0${minutes}` : minutes;
-    const dialogRef = this.dialog.open(AddAppointmentComponent, {
+    const dialogRef = this.dialog.open(AppointmentDialogComponent, {
       width: '500px',
       panelClass: 'dialog-container',
       data: {
@@ -286,7 +285,7 @@ export class CalendarViewModelService {
   }
   editAppointment(appointment: Appointment, event: Event) {
     event.preventDefault();
-    const dialogRef = this.dialog.open(EditAppointmentComponent, {
+    const dialogRef = this.dialog.open(AppointmentDialogComponent, {
       width: '500px',
       panelClass: 'dialog-container',
       data: appointment,
