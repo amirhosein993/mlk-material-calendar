@@ -17,8 +17,14 @@ import {
 } from '@angular/material/dialog';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
+import {
+  MatDatepicker,
+  MatDatepickerInput,
+  MatDatepickerModule,
+  MatDatepickerToggle
+} from '@angular/material/datepicker';
 import {MatButton} from '@angular/material/button';
+import {DateAdapter, provideNativeDateAdapter} from '@angular/material/core';
 
 @Component({
   selector: 'app-appointment-dialog',
@@ -29,11 +35,15 @@ import {MatButton} from '@angular/material/button';
     MatFormField,
     MatInput,
     MatDatepickerInput,
+    MatDatepickerModule,
     MatDatepickerToggle,
     MatDatepicker,
     MatDialogActions,
     MatButton,
     MatLabel
+  ],
+  providers : [
+    provideNativeDateAdapter()
   ],
   standalone : true,
   templateUrl: './appointment-dialog.component.html',

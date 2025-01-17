@@ -2,17 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput, MatInputModule} from '@angular/material/input';
 import {
-  MatDatepicker,
-  MatDatepickerInput,
   MatDatepickerModule,
-  MatDatepickerToggle
 } from '@angular/material/datepicker';
 import {FormsModule} from '@angular/forms';
 import {MatButton, MatIconButton} from '@angular/material/button';
-import {Appointment} from './model/appointment';
 import {CalendarViewModelService} from './service/calendar-view-model.service';
 import {DatePipe, NgStyle} from '@angular/common';
-import {DateAdapter, MatNativeDateModule, provideNativeDateAdapter} from '@angular/material/core';
+import { provideNativeDateAdapter} from '@angular/material/core';
 import {CdkDrag, CdkDragHandle, CdkDropList, CdkDropListGroup} from '@angular/cdk/drag-drop';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 import {MatIcon} from '@angular/material/icon';
