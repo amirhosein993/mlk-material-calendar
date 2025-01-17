@@ -13,8 +13,8 @@ export class CalendarViewModelService {
   public get appointments(): Signal<Array<Appointment>> {
     return this._appointments.asReadonly();
   }
-  private _weeks : WritableSignal<Array<Date>> = signal([]);
-  public get weeks() : Signal<Array<Date>> {
+  private _weeks : WritableSignal<Date[][]> = signal([]);
+  public get weeks() : Signal<Date[][]> {
     return this._weeks.asReadonly();
   }
 
@@ -89,7 +89,7 @@ export class CalendarViewModelService {
       this._monthDays.set([...this._monthDays() , currentDate]);
       week.push(currentDate);
       if (week.length === 7) {
-        this._weeks.set([...this._weeks() , ...week]);
+        this._weeks().push(week);
         week = [];
       }
     }
@@ -107,7 +107,7 @@ export class CalendarViewModelService {
     }
 
     if (week.length > 0) {
-      this._weeks.set([...this._weeks() , ...week]);
+      this._weeks().push(week);
     }
   }
 
