@@ -1,12 +1,18 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {RouterLink, RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
+  standalone: true,
+  imports: [
+    RouterLink,
+    RouterOutlet
+  ],
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'mlk-material-calendar';
+  redirectToCalendar() {
+
+  }
 }
