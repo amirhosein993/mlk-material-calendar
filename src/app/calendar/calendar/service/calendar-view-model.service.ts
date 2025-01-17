@@ -283,25 +283,8 @@ export class CalendarViewModelService {
 
     return appointmentsForDateTime;
   }
-  editAppointment(appointment: Appointment, event: Event) {
-    event.preventDefault();
-    const dialogRef = this.dialog.open(AppointmentDialogComponent, {
-      width: '500px',
-      panelClass: 'dialog-container',
-      data: appointment,
-    });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        const index = this._appointments().findIndex(
-          (appointment) => appointment.id === result.id
-        );
-        if (result.remove) {
-          this._appointments.set(this._appointments().splice(index, 1));
-        } else {
-          this._appointments()[index] = result;
-        }
-      }
-    });
+  deleteAppointment(appointment: Appointment) : void {
+    this._appointments().splice(this._appointments().findIndex(item => item.id === appointment.id), 1);
   }
 }

@@ -123,9 +123,9 @@
                                 cdkDragHandle
                                 [cdkDragData]="appointment"
                                 [ngStyle]="{ 'background-color': appointment.color }"
-                                (click)="calendarViewModelService.editAppointment(appointment, $event)"
-                                (keydown.enter)="calendarViewModelService.editAppointment(appointment, $event)"
-                                (keydown.space)="calendarViewModelService.editAppointment(appointment, $event)"
+                                (click)="calendarViewModelService.deleteAppointment(appointment)"
+                                (keydown.enter)="calendarViewModelService.deleteAppointment(appointment)"
+                                (keydown.space)="calendarViewModelService.deleteAppointment(appointment)"
                                 >
                                 <span>{{ appointment.title }}</span>
                               </div>
@@ -192,9 +192,9 @@
                             cdkDragHandle
                             [cdkDragData]="appointment"
                             [ngStyle]="{ 'background-color': appointment.color }"
-                            (click)="calendarViewModelService.editAppointment(appointment, $event)"
-                            (keydown.enter)="calendarViewModelService.editAppointment(appointment, $event)"
-                            (keydown.space)="calendarViewModelService.editAppointment(appointment, $event)"
+                            (click)="calendarViewModelService.deleteAppointment(appointment)"
+                            (keydown.enter)="calendarViewModelService.deleteAppointment(appointment)"
+                            (keydown.space)="calendarViewModelService.deleteAppointment(appointment)"
                             >
                             <span>{{ appointment.title }}</span>
                           </div>
@@ -247,9 +247,9 @@
                           cdkDragHandle
                           [cdkDragData]="appointment"
                           [ngStyle]="{ 'background-color': appointment.color }"
-                          (click)="calendarViewModelService.editAppointment(appointment, $event)"
-                          (keydown.enter)="calendarViewModelService.editAppointment(appointment, $event)"
-                          (keydown.space)="calendarViewModelService.editAppointment(appointment, $event)"
+                          (click)="calendarViewModelService.deleteAppointment(appointment)"
+                          (keydown.enter)="calendarViewModelService.deleteAppointment(appointment)"
+                          (keydown.space)="calendarViewModelService.deleteAppointment(appointment)"
                           >
                           <span>{{ appointment.title }}</span>
                         </div>
