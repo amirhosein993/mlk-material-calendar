@@ -4,23 +4,23 @@
       <div>
         <h2
           class="calendar-month"
-          *ngIf="currentView === 'month' || currentView === 'week'"
+          *ngIf="calendarViewModelService.currentView === 'month' || calendarViewModelService.currentView === 'week'"
         >
-          {{ viewDate | date : "MMMM" }}
-          <span>{{ viewDate | date : "y" }}</span>
+          {{ calendarViewModelService.viewDate | date : "MMMM" }}
+          <span>{{ calendarViewModelService.viewDate | date : "y" }}</span>
         </h2>
-        <h2 class="calendar-month" *ngIf="currentView === 'day'">
-          {{ viewDate | date : "d MMMM" }}
-          <span>{{ viewDate | date : "y" }}</span>
+        <h2 class="calendar-month" *ngIf="calendarViewModelService.currentView === 'day'">
+          {{ calendarViewModelService.viewDate | date : "d MMMM" }}
+          <span>{{ calendarViewModelService.viewDate | date : "y" }}</span>
         </h2>
-        <span class="calendar-dayname" *ngIf="currentView === 'day'">
-          {{ viewDate | date : "EEEE" }}
+        <span class="calendar-dayname" *ngIf="calendarViewModelService.currentView === 'day'">
+          {{ calendarViewModelService.viewDate | date : "EEEE" }}
         </span>
       </div>
       <mat-button-toggle-group
         class="calendar-view-toggle"
         name="currentView"
-        (change)="switchToView($event.value)"
+        (change)="calendarViewModelService.switchToView($event.value)"
         aria-label="Calendar-View"
       >
         <mat-button-toggle checked="{{ true }}" value="{{ CalendarView.Month }}"
@@ -36,33 +36,33 @@
       <div class="calendar-controls">
         <button
           mat-icon-button
-          (click)="previous()"
-          (keydown.enter)="previous()"
-          (keydown.space)="previous()"
+          (click)="calendarViewModelService.previous()"
+          (keydown.enter)="calendarViewModelService.previous()"
+          (keydown.space)="calendarViewModelService.previous()"
         >
           <mat-icon>chevron_left</mat-icon>
         </button>
         <button
           mat-stroked-button
-          (click)="viewToday()"
-          (keydown.enter)="viewToday()"
-          (keydown.space)="viewToday()"
+          (click)="calendarViewModelService.viewToday()"
+          (keydown.enter)="calendarViewModelService.viewToday()"
+          (keydown.space)="calendarViewModelService.viewToday()"
         >
           Today
         </button>
         <button
           mat-icon-button
-          (click)="next()"
-          (keydown.enter)="next()"
-          (keydown.space)="next()"
+          (click)="calendarViewModelService.next()"
+          (keydown.enter)="calendarViewModelService.next()"
+          (keydown.space)="calendarViewModelService.next()"
         >
           <mat-icon>chevron_right</mat-icon>
         </button>
         <button
           mat-flat-button
-          (click)="selectDate()"
-          (keydown.enter)="selectDate()"
-          (keydown.space)="selectDate()"
+          (click)="calendarViewModelService.selectDate()"
+          (keydown.enter)="calendarViewModelService.selectDate()"
+          (keydown.space)="calendarViewModelService.selectDate()"
         >
           Add Appointment
         </button>
@@ -75,29 +75,29 @@
       cellspacing="0"
       cellpadding="0"
       class="calendar-view-month"
-      *ngIf="currentView === 'month'"
+      *ngIf="calendarViewModelService.currentView === 'month'"
     >
       <thead>
       <tr>
-        <th *ngFor="let day of weekDays">
+        <th *ngFor="let day of calendarViewModelService.weekDays">
           {{ day }}
         </th>
       </tr>
       </thead>
       <tbody cdkDropListGroup>
-      <tr *ngFor="let week of weeks">
+      <tr *ngFor="let week of calendarViewModelService.weeks()">
         <td
           *ngFor="let date of week"
           cdkDropList
-          (cdkDropListDropped)="drop($event, date)"
-          [cdkDropListData]="appointments"
-          [class.today]="isToday(date)"
-          [ngStyle]="{ opacity: isCurrentMonth(date) ? '1' : '0.5' }"
+          (cdkDropListDropped)="calendarViewModelService.drop($event, date)"
+          [cdkDropListData]="calendarViewModelService.appointments()"
+          [class.today]="calendarViewModelService.isToday(date)"
+          [ngStyle]="{ opacity: calendarViewModelService.isCurrentMonth(date) ? '1' : '0.5' }"
         >
           <div
-            (click)="selectDate(date)"
-            (keydown.enter)="selectDate(date)"
-            (keydown.space)="selectDate(date)"
+            (click)="calendarViewModelService.selectDate(date)"
+            (keydown.enter)="calendarViewModelService.selectDate(date)"
+            (keydown.space)="calendarViewModelService.selectDate(date)"
             class="cell-overlay"
             tabindex="0"
           ></div>
@@ -105,18 +105,18 @@
             {{ date.getDate() }}
           </div>
           <div class="appointments">
-            <ng-container *ngFor="let appointment of appointments">
+            <ng-container *ngFor="let appointment of calendarViewModelService.appointments()">
               <div
                 tabindex="0"
-                *ngIf="isSameDate(appointment.date, date)"
+                *ngIf="calendarViewModelService.isSameDate(appointment.date, date)"
                 class="appointment"
                 cdkDrag
                 cdkDragHandle
                 [cdkDragData]="appointment"
                 [ngStyle]="{ 'background-color': appointment.color }"
-                (click)="editAppointment(appointment, $event)"
-                (keydown.enter)="editAppointment(appointment, $event)"
-                (keydown.space)="editAppointment(appointment, $event)"
+                (click)="calendarViewModelService.editAppointment(appointment, $event)"
+                (keydown.enter)="calendarViewModelService.editAppointment(appointment, $event)"
+                (keydown.space)="calendarViewModelService.editAppointment(appointment, $event)"
               >
                 <span>{{ appointment.title }}</span>
               </div>
@@ -134,39 +134,39 @@
       cellspacing="0"
       cellpadding="0"
       class="calendar-view-week"
-      *ngIf="currentView === 'week'"
+      *ngIf="calendarViewModelService.currentView === 'week'"
     >
       <thead>
       <tr>
         <th></th>
-        <th *ngFor="let day of weekDays; index as i">
-          {{ day }} {{ monthDays[i].getDate() }}
+        <th *ngFor="let day of calendarViewModelService.weekDays; index as i">
+          {{ day }} {{ calendarViewModelService.monthDays()[i].getDate() }}
         </th>
       </tr>
       </thead>
       <tbody cdkDropListGroup>
-      <tr *ngFor="let timeSlot of timeSlots">
+      <tr *ngFor="let timeSlot of calendarViewModelService.timeSlots()">
         <td [width]="10" class="calendar-slot-cell">
           <span>{{ timeSlot }}</span>
         </td>
         <td
-          *ngFor="let day of weekDays; index as i"
+          *ngFor="let day of calendarViewModelService.weekDays; index as i"
           cdkDropList
-          (cdkDropListDropped)="drop($event, monthDays[i], timeSlot)"
-          [cdkDropListData]="appointments"
+          (cdkDropListDropped)="calendarViewModelService.drop($event, calendarViewModelService.monthDays()[i], timeSlot)"
+          [cdkDropListData]="calendarViewModelService.appointments()"
         >
           <div
-            (click)="selectDate(monthDays[i], timeSlot)"
-            (keydown.enter)="selectDate(monthDays[i], timeSlot)"
-            (keydown.space)="selectDate(monthDays[i], timeSlot)"
+            (click)="calendarViewModelService.selectDate(calendarViewModelService.monthDays()[i], timeSlot)"
+            (keydown.enter)="calendarViewModelService.selectDate(calendarViewModelService.monthDays()[i], timeSlot)"
+            (keydown.space)="calendarViewModelService.selectDate(calendarViewModelService.monthDays()[i], timeSlot)"
             class="cell-overlay"
             tabindex="0"
           ></div>
           <div
             tabindex="0"
             *ngFor="
-                let appointment of getAppointmentsForDateTime(
-                  monthDays[i],
+                let appointment of calendarViewModelService.getAppointmentsForDateTime(
+                  calendarViewModelService.monthDays()[i],
                   timeSlot
                 )
               "
@@ -175,9 +175,9 @@
             cdkDragHandle
             [cdkDragData]="appointment"
             [ngStyle]="{ 'background-color': appointment.color }"
-            (click)="editAppointment(appointment, $event)"
-            (keydown.enter)="editAppointment(appointment, $event)"
-            (keydown.space)="editAppointment(appointment, $event)"
+            (click)="calendarViewModelService.editAppointment(appointment, $event)"
+            (keydown.enter)="calendarViewModelService.editAppointment(appointment, $event)"
+            (keydown.space)="calendarViewModelService.editAppointment(appointment, $event)"
           >
             <span>{{ appointment.title }}</span>
           </div>
@@ -192,30 +192,30 @@
       cellspacing="0"
       cellpadding="0"
       class="calendar-view-day"
-      *ngIf="currentView === 'day'"
+      *ngIf="calendarViewModelService.currentView === 'day'"
     >
       <tbody cdkDropListGroup>
-      <tr *ngFor="let slot of timeSlots">
+      <tr *ngFor="let slot of calendarViewModelService.timeSlots()">
         <td [width]="10" class="calendar-slot-cell">
           <span>{{ slot }}</span>
         </td>
         <td
           cdkDropList
-          (cdkDropListDropped)="drop($event, monthDays[0], slot)"
-          [cdkDropListData]="appointments"
+          (cdkDropListDropped)="calendarViewModelService.drop($event, calendarViewModelService.monthDays()[0], slot)"
+          [cdkDropListData]="calendarViewModelService.appointments()"
         >
           <div
-            (click)="selectDate(monthDays[0], slot)"
-            (keydown.enter)="selectDate(monthDays[0], slot)"
-            (keydown.space)="selectDate(monthDays[0], slot)"
+            (click)="calendarViewModelService.selectDate(calendarViewModelService.monthDays()[0], slot)"
+            (keydown.enter)="calendarViewModelService.selectDate(calendarViewModelService.monthDays()[0], slot)"
+            (keydown.space)="calendarViewModelService.selectDate(calendarViewModelService.monthDays()[0], slot)"
             class="cell-overlay"
             tabindex="0"
           ></div>
           <div
             tabindex="0"
             *ngFor="
-                let appointment of getAppointmentsForDateTime(
-                  monthDays[0],
+                let appointment of calendarViewModelService.getAppointmentsForDateTime(
+                  calendarViewModelService.monthDays()[0],
                   slot
                 )
               "
@@ -224,9 +224,9 @@
             cdkDragHandle
             [cdkDragData]="appointment"
             [ngStyle]="{ 'background-color': appointment.color }"
-            (click)="editAppointment(appointment, $event)"
-            (keydown.enter)="editAppointment(appointment, $event)"
-            (keydown.space)="editAppointment(appointment, $event)"
+            (click)="calendarViewModelService.editAppointment(appointment, $event)"
+            (keydown.enter)="calendarViewModelService.editAppointment(appointment, $event)"
+            (keydown.space)="calendarViewModelService.editAppointment(appointment, $event)"
           >
             <span>{{ appointment.title }}</span>
           </div>

@@ -38,17 +38,6 @@ import { CalendarView } from './model/calendar-veiw.enum';
   ]
 })
 export class CalendarComponent implements OnInit{
-  viewDate: Date = new Date();
-  selectedDate: Date | null = null;
-  selectedStartTime: string | undefined;
-  weekDays: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  monthDays: Date[] = [];
-  currentView: CalendarView = CalendarView.Month;
-  timeSlots: string[] = [];
-
-  weeks: Date[][] = [];
-
-  public CalendarView = CalendarView;
 
   constructor(protected calendarViewModelService: CalendarViewModelService) {
   }
@@ -60,4 +49,6 @@ export class CalendarComponent implements OnInit{
   addAppointmentClicked() {
 
   }
+
+  protected readonly CalendarView = CalendarView;
 }
