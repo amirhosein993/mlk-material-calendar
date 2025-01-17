@@ -3,7 +3,9 @@ import {Appointment} from '../model/appointment';
 import {AppointmentRepositoryService} from './appointment-repository.service';
 import {CalendarView} from '../model/calendar-veiw.enum';
 import {MatDialog} from '@angular/material/dialog';
-import {AddAppointmentComponent} from '../add-appointment/add-appointment.component';
+import {AddAppointmentComponent} from '../../add-appointment/add-appointment.component';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
+import {EditAppointmentComponent} from '../../edit-appointment/edit-appointment.component';
 
 @Injectable()
 export class CalendarViewModelService {
@@ -31,14 +33,15 @@ export class CalendarViewModelService {
   public viewDate: Date = new Date();
   public selectedDate: Date | null = null;
   public selectedStartTime: string | undefined;
+  weekDays: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   constructor(
     public appointmentsRepository : AppointmentRepositoryService ,
     public dialog: MatDialog
   ) { }
 
-  onStart(currentView : CalendarView , viewDate : Date ) : void{
-    this.generateView(currentView, viewDate);
+  onStart() : void{
+    this.generateView(this.currentView , this.viewDate);
     this.generateTimeSlots();
     this.loadAppointments();
   }
@@ -56,6 +59,15 @@ export class CalendarViewModelService {
         break;
       default:
         this.generateMonthView(date);
+    }
+  }
+
+  drop(event: CdkDragDrop<Appointment[]>, date: Date, slot?: string) {
+    const movedAppointment = event.item.data;
+    movedAppointment.date = date;
+    if (slot) {
+      movedAppointment.startTime = slot;
+      movedAppointment.endTime = slot;
     }
   }
 
@@ -248,5 +260,49 @@ export class CalendarViewModelService {
     this.appointmentsRepository.getAppointments().subscribe(appointments => {
       this._appointments.set(appointments);
     })
+  }
+
+  viewToday(): void {
+    this.viewDate = new Date();
+    this.generateMonthView(this.viewDate);
+  }
+
+  isCurrentMonth(date: Date): boolean {
+    return (
+      date.getMonth() === this.viewDate.getMonth() &&
+      date.getFullYear() === this.viewDate.getFullYear()
+    );
+  }
+
+  getAppointmentsForDateTime(date: Date, timeSlot: string): Appointment[] {
+    const appointmentsForDateTime: Appointment[] = this.appointments().filter(
+      (appointment) =>
+        this.isSameDate(appointment.date, date) &&
+        appointment.startTime <= timeSlot &&
+        appointment.endTime >= timeSlot
+    );
+
+    return appointmentsForDateTime;
+  }
+  editAppointment(appointment: Appointment, event: Event) {
+    event.preventDefault();
+    const dialogRef = this.dialog.open(EditAppointmentComponent, {
+      width: '500px',
+      panelClass: 'dialog-container',
+      data: appointment,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const index = this._appointments().findIndex(
+          (appointment) => appointment.id === result.id
+        );
+        if (result.remove) {
+          this._appointments.set(this._appointments().splice(index, 1));
+        } else {
+          this._appointments()[index] = result;
+        }
+      }
+    });
   }
 }
